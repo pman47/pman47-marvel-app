@@ -1,9 +1,10 @@
 // const key = "5a8c32c388f6d60cfb79758f85fb9e29";
 
-const form = document.getElementById("form");
-if (form) {
-  form.addEventListener("submit", (e) => {});
-}
+document.getElementById("form").addEventListener("submit", (e) => {
+  const characterName = document.getElementById("searchName").textContent;
+  document.getElementById("characterName").innerText = "hehe";
+  e.preventDefault;
+});
 
 // const characterName = "wong";
 // fetch(

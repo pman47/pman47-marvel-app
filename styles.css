@@ -63,24 +63,20 @@ nav #submitBtn {
 
 .container {
   margin-top: 1rem;
+  margin-bottom: 10rem;
   background: rgba(255, 255, 255, 0.8);
   width: 60%;
   border-radius: 1rem;
-}
-
-.tmp {
-  height: 200px;
-  width: 100px;
 }
 
 #characterDetail {
   background: rgba(255, 255, 255, 0.8);
   border-radius: 1rem;
   width: 90%;
-  margin: 40px auto;
-  height: 500px;
+  margin: 1.5rem auto;
+  height: auto;
   /* display: flex;
-  justify-content: space-around; */
+  justify-content: left; */
   display: grid;
   grid-template-columns: 1.5fr 2.5fr;
 }
@@ -90,10 +86,13 @@ nav #submitBtn {
   overflow: hidden;
   display: flex;
   align-items: center;
+  height: auto;
   justify-content: center;
 }
 
 #characterImage img {
+  height: 100%;
+  width: 100%;
   object-fit: cover;
 }
 
@@ -103,10 +102,136 @@ nav #submitBtn {
 }
 
 #characterName {
+  text-transform: uppercase;
+  letter-spacing: 0.5rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
 
 #characterDescription {
   font-size: 1.5rem;
+}
+
+.Title {
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: 0.5rem;
+  text-transform: uppercase;
+  color: #202020;
+  padding-bottom: 0.5rem;
+  margin: 1rem 0;
+  text-align: center;
+  border-bottom: 1px solid #202020;
+}
+
+.comicDetails,
+.seriesDetails {
+  width: 90%;
+  margin: 40px auto;
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: 0px 0px 20px rgba(255, 255, 255, 1);
+  border-radius: 1rem;
+  padding: 0.5rem;
+  /* display: flex;
+  justify-content: space-around; */
+  display: grid;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 1rem;
+}
+
+.comicCard,
+.seriesCard {
+  flex-wrap: wrap;
+  border-radius: 1rem;
+  width: auto;
+  background: #202020;
+  margin-bottom: 1rem;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.6);
+}
+
+.comicCard img,
+.seriesCard img {
+  border: 10px solid #202020;
+  border-radius: 1.5rem;
+  width: 100%;
+  height: 325px;
+  object-fit: cover;
+}
+
+.comicDetail,
+.seriesDetail {
+  margin: 1rem;
+  margin-top: 0;
+  color: #fff;
+}
+
+.comicDetail .comicName,
+.seriesDetail .seriesName {
+  font-size: 1.4rem;
+  font-weight: bold;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #fff;
+  margin: 0.5rem 0;
+}
+
+.comicDetail .comicDescription,
+.seriesDetail .seriesDescription {
+  font-size: 1.2rem;
+}
+
+.seriesRating,
+.seriesType {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.seriesYear {
+  font-weight: bold;
+  font-size: 1.4rem;
+}
+
+@media only screen and (max-width: 1250px) {
+  .navContainer {
+    width: 80%;
+  }
+
+  .container {
+    width: 80%;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .navContainer {
+    width: 95%;
+  }
+
+  .container {
+    width: 95%;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .container {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-radius: 0;
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+
+@media only screen and (max-width: 530px) {
+  nav {
+    height: 150px;
+  }
+  .navContainer {
+    height: 110px;
+    flex-direction: column;
+  }
+
+  #characterDetail {
+    display: flex;
+    flex-direction: column;
+  }
 }
