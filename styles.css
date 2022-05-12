@@ -68,6 +68,7 @@ footer a {
 
 nav #searchName {
   padding: 10px 20px;
+  margin-right: 40px;
   font-size: 1rem;
   margin: 0;
   border-radius: 0;
@@ -135,6 +136,12 @@ nav #submitBtn {
 
 #characterDescription {
   font-size: 1.5rem;
+}
+
+.noCharDes {
+  border-top: 1px solid #202020;
+  padding-top: 1rem;
+  margin-top: 1rem;
 }
 
 .Title {

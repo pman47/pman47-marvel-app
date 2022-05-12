@@ -37,16 +37,16 @@
           </svg>
         </a>
 
-        <form action="index.html" id="form">
+        <div id="form">
           <input
-            type="text"
-            name=""
             id="searchName"
+            list="nameList"
             placeholder="Enter Character Name"
-            required
+            onkeyup="getNameList(this.value)"
           />
+
           <input type="submit" id="submitBtn" value="Search" title="search" />
-        </form>
+        </div>
       </div>
     </nav>
 
@@ -55,7 +55,11 @@
     <div class="container">
       <div id="characterDetail">
         <div id="characterImage">
-          <img src="./assets/background.jpg" alt="characterImage" />
+          <img
+            src="./assets/background.jpg"
+            id="mainImage"
+            alt="characterImage"
+          />
         </div>
         <div id="characterOtherDetails">
           <p id="characterName">Wong</p>
