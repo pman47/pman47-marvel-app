@@ -67,8 +67,8 @@ footer a {
 }
 
 nav #searchName {
-  padding: 10px 20px;
-  margin-right: 40px;
+  padding: 10px;
+  width: 180px;
   font-size: 1rem;
   margin: 0;
   border-radius: 0;
@@ -87,6 +87,7 @@ nav #submitBtn {
 }
 
 .container {
+  position: relative;
   margin-top: 1rem;
   margin-bottom: 10rem;
   background: rgba(255, 255, 255, 0.8);
@@ -167,7 +168,6 @@ nav #submitBtn {
   /* display: flex;
   justify-content: space-around; */
   display: grid;
-  display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   grid-gap: 1rem;
 }
@@ -221,6 +221,20 @@ nav #submitBtn {
 .seriesYear {
   font-weight: bold;
   font-size: 1.4rem;
+}
+
+#characterNotFound {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 1rem;
+  width: 90%;
+  height: 300px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
 }
 
 @media only screen and (max-width: 1250px) {

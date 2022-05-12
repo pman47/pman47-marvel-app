@@ -61,40 +61,54 @@ document.getElementById("submitBtn").addEventListener("click", (e) => {
       .then((response) => {
         // console.log(response);
 
-        const CharacterId = `${response.data.results[0].id}`;
-        const name = `${response.data.results[0].name}`;
-        const description = `${response.data.results[0].description}`.trim();
-        const imgPath =
-          `${response.data.results[0].thumbnail.path}` +
-          "." +
-          `${response.data.results[0].thumbnail.extension}`;
+        if (response.data.count == 0) {
+          document.getElementById("characterNotFound").style.display = "flex";
+          document.getElementById("characterDetail").style.display = "none";
+          const titles = document.getElementsByClassName("Title");
+          for (let i = 0; i < titles.length; i++) {
+            titles[i].style.display = "none";
+          }
+          document.getElementById("comics").style.display = "none";
+          document.getElementById("series").style.display = "none";
 
-        const imgTag = document.getElementById("mainImage");
-        imgTag.src = imgPath;
-
-        const nameTag = document.getElementById("characterName");
-        nameTag.innerText = name;
-
-        const desTag = document.getElementById("characterDescription");
-        if (description == null || description == "") {
-          desTag.classList.add("noCharDes");
-          desTag.innerText = "--";
+          document.querySelector("footer").style.position = "fixed";
+          document.querySelector("footer").style.bottom = "0px";
         } else {
-          desTag.classList.remove("noCharDes");
-          desTag.innerText = description;
+          document.getElementById("characterNotFound").style.display = "none";
+          document.getElementById("characterDetail").style.display = "grid";
+          const titles = document.getElementsByClassName("Title");
+          for (let i = 0; i < titles.length; i++) {
+            titles[i].style.removeProperty("display");
+          }
+          document.getElementById("comics").style.display = "grid";
+          document.getElementById("series").style.display = "grid";
+
+          document.querySelector("footer").style.removeProperty("position");
+          document.querySelector("footer").style.removeProperty("bottom");
+
+          const CharacterId = `${response.data.results[0].id}`;
+          const name = `${response.data.results[0].name}`;
+          const description = `${response.data.results[0].description}`.trim();
+          const imgPath =
+            `${response.data.results[0].thumbnail.path}` +
+            "." +
+            `${response.data.results[0].thumbnail.extension}`;
+
+          const imgTag = document.getElementById("mainImage");
+          imgTag.src = imgPath;
+
+          const nameTag = document.getElementById("characterName");
+          nameTag.innerText = name;
+
+          const desTag = document.getElementById("characterDescription");
+          if (description == null || description == "") {
+            desTag.classList.add("noCharDes");
+            desTag.innerText = "--";
+          } else {
+            desTag.classList.remove("noCharDes");
+            desTag.innerText = description;
+          }
         }
-        // console.log(response.data.results[0].thumbnail);
-        // var img = document.createElement("img");
-        // img.src = imgPath;
-        // document.getElementById("body").appendChild(img);
-
-        // var nameElement = document.createElement("h3");
-        // nameElement.innerHTML = name;
-        // document.getElementById("body").appendChild(nameElement);
-
-        // var desElement = document.createElement("p");
-        // desElement.innerHTML = description;
-        // document.getElementById("body").appendChild(desElement);
       })
       .catch((err) => console.error(err));
   }
