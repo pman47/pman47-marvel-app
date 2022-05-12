@@ -1,4 +1,7 @@
 const key = "5a8c32c388f6d60cfb79758f85fb9e29";
+window.onload = function funLoad() {
+  fetchDetails("Daredevil");
+};
 
 // GET List of Character Names For Searching Purpose
 function getNameList(searchName) {
@@ -35,6 +38,7 @@ function getNameList(searchName) {
   }
 }
 
+// Main Code
 document.getElementById("submitBtn").addEventListener("click", (e) => {
   e.preventDefault;
   // const characterName = document.getElementById("searchName").textContent;
@@ -49,49 +53,54 @@ document.getElementById("submitBtn").addEventListener("click", (e) => {
     searchNameEle.style.border = "";
     searchNameEle.style.borderRadius = "";
     const characterName = searchName;
-
-    fetch(
-      "https://gateway.marvel.com:443/v1/public/characters?name=" +
-        characterName +
-        "&apikey=" +
-        key
-    )
-      .then((response) => response.json())
-      .then((response) => {
-        // Check if we have data or not
-        if (response.data.count == 0) {
-          removeElements(); // Remove all elements and show character not found card
-        } else {
-          // If we found data then
-          addElements(); // Add Body Elements
-          updateCharacterData(response); // Update character Image, Name, Description
-
-          // COMIC URL
-          if (response.data.results[0].comics.available > 0) {
-            // If there are Comics Available
-            const comicUrl = response.data.results[0].comics.collectionURI;
-            printComicDetails(comicUrl + "?apikey=" + key);
-          } else {
-            // If there is no Comic available
-            document.getElementById("comics").innerHTML =
-              "<h3 style='text-align:center'>No Comics Available for this character :(</h3>";
-          }
-
-          // SERIES URL
-          if (response.data.results[0].series.available > 0) {
-            const seriesUrl = response.data.results[0].series.collectionURI;
-            printSeriesDetails(seriesUrl + "?apikey=" + key);
-          } else {
-            // If There is no series available
-            document.getElementById("series").innerHTML =
-              "<h3 style='text-align:center'>No Series Available for this character :(</h3>";
-          }
-        }
-      })
-      .catch((err) => console.error(err));
+    fetchDetails(characterName);
   }
 });
 
+// Fetching Character Details
+function fetchDetails(characterName) {
+  fetch(
+    "https://gateway.marvel.com:443/v1/public/characters?name=" +
+      characterName +
+      "&apikey=" +
+      key
+  )
+    .then((response) => response.json())
+    .then((response) => {
+      // Check if we have data or not
+      if (response.data.count == 0) {
+        removeElements(); // Remove all elements and show character not found card
+      } else {
+        // If we found data then
+        addElements(); // Add Body Elements
+        updateCharacterData(response); // Update character Image, Name, Description
+
+        // COMIC URL
+        if (response.data.results[0].comics.available > 0) {
+          // If there are Comics Available
+          const comicUrl = response.data.results[0].comics.collectionURI;
+          printComicDetails(comicUrl + "?apikey=" + key);
+        } else {
+          // If there is no Comic available
+          document.getElementById("comics").innerHTML =
+            "<h3 style='text-align:center'>No Comics Available for this character :(</h3>";
+        }
+
+        // SERIES URL
+        if (response.data.results[0].series.available > 0) {
+          const seriesUrl = response.data.results[0].series.collectionURI;
+          printSeriesDetails(seriesUrl + "?apikey=" + key);
+        } else {
+          // If There is no series available
+          document.getElementById("series").innerHTML =
+            "<h3 style='text-align:center'>No Series Available for this character :(</h3>";
+        }
+      }
+    })
+    .catch((err) => console.error(err));
+}
+
+// Removing unnecessary elements from page
 function removeElements() {
   document.getElementById("container").style.display = "none";
   document.getElementById("characterNotFound").style.display = "flex";
@@ -99,6 +108,7 @@ function removeElements() {
   document.querySelector("footer").style.bottom = "0px";
 }
 
+// Adding those elements to page
 function addElements() {
   document.getElementById("container").style.removeProperty("display");
   document.getElementById("characterNotFound").style.display = "none";
@@ -106,6 +116,7 @@ function addElements() {
   document.querySelector("footer").style.removeProperty("bottom");
 }
 
+// Updating Character Card as soon as other character is searched
 function updateCharacterData(response) {
   const CharacterId = response.data.results[0].id;
   console.log(CharacterId);
@@ -132,6 +143,7 @@ function updateCharacterData(response) {
   }
 }
 
+// Printing Comic Details of character
 function printComicDetails(url) {
   fetch(url)
     .then((response) => response.json())
@@ -181,6 +193,7 @@ function printComicDetails(url) {
     .catch((error) => console.log(error));
 }
 
+// Printing Series Details of character
 function printSeriesDetails(url) {
   fetch(url)
     .then((response) => response.json())
