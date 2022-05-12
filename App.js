@@ -68,13 +68,23 @@ document.getElementById("submitBtn").addEventListener("click", (e) => {
 
           // COMIC URL
           if (response.data.results[0].comics.available > 0) {
-            // If there is a comic
+            // If there are Comics Available
             const comicUrl = response.data.results[0].comics.collectionURI;
             printComicDetails(comicUrl + "?apikey=" + key);
           } else {
-            // If there is not
+            // If there is no Comic available
             document.getElementById("comics").innerHTML =
               "<h3 style='text-align:center'>No Comics Available for this character :(</h3>";
+          }
+
+          // SERIES URL
+          if (response.data.results[0].series.available > 0) {
+            const seriesUrl = response.data.results[0].series.collectionURI;
+            printSeriesDetails(seriesUrl + "?apikey=" + key);
+          } else {
+            // If There is no series available
+            document.getElementById("series").innerHTML =
+              "<h3 style='text-align:center'>No Series Available for this character :(</h3>";
           }
         }
       })
@@ -155,13 +165,72 @@ function printComicDetails(url) {
 
         const comicDes = document.createElement("div");
         comicDes.classList.add("comicDescription");
-        comicDes.innerHTML = comicDescription;
+        if (comicDescription == null || comicDescription.trim() == "") {
+          comicDes.innerHTML = "<h3 style='margin: 20px 10px;'> -- </h3>";
+        } else {
+          comicDes.innerHTML = comicDescription;
+        }
 
         comicDetail.append(comicName, comicDes);
 
         comicCard.append(poster, comicDetail);
 
         comics.append(comicCard);
+      });
+    })
+    .catch((error) => console.log(error));
+}
+
+function printSeriesDetails(url) {
+  fetch(url)
+    .then((response) => response.json())
+    .then((res) => {
+      const series = document.getElementById("series");
+      series.innerHTML = "";
+
+      const allSeriesData = res.data.results;
+
+      allSeriesData.forEach((seriesData) => {
+        const seriesTitle = seriesData.title;
+        const seriesDes = seriesData.description;
+        const startYear = seriesData.startYear;
+        const endYear = seriesData.endYear;
+        const rating = seriesData.rating;
+        const type = seriesData.type;
+
+        const thumbnail =
+          seriesData.thumbnail.path + "." + seriesData.thumbnail.extension;
+
+        const seriesCard = document.createElement("div");
+        seriesCard.classList.add("seriesCard");
+        seriesCard.innerHTML = ` <img class='tmp' src='${thumbnail}' alt='${seriesTitle}' />
+          <div class='seriesDetail'>
+            <div class='seriesName'>${seriesTitle}</div>
+            <div class='seriesDescription'>
+              ${
+                seriesDes == null || seriesDes.trim() == ""
+                  ? "<h3 style='margin: 20px 10px;'> -- </h3>"
+                  : seriesDes
+              }
+            </div>
+            <div class='seriesYear'>${
+              startYear == null || startYear == "" ? "-" : startYear
+            } - ${endYear == null || endYear == "" ? "-" : endYear}</div>
+            <div class='seriesRating'>
+              <span>Rating:</span>
+              <span class='rating'>${
+                rating == null || rating == "" ? "Not Provided" : rating
+              }</span>
+            </div>
+            <div class='seriesType'>
+              <span>Type:</span>
+              <span class='type'>${
+                type == null || type == "" ? "Not Provided" : type
+              }</span>
+            </div>
+          </div>`;
+
+        series.append(seriesCard);
       });
     })
     .catch((error) => console.log(error));
