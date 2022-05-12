@@ -75,26 +75,23 @@ function fetchDetails(characterName) {
         addElements(); // Add Body Elements
         updateCharacterData(response); // Update character Image, Name, Description
 
+        const CharacterId = response.data.results[0].id;
+
         // COMIC URL
-        if (response.data.results[0].comics.available > 0) {
-          // If there are Comics Available
-          const comicUrl = response.data.results[0].comics.collectionURI;
-          printComicDetails(comicUrl + "?apikey=" + key);
-        } else {
-          // If there is no Comic available
-          document.getElementById("comics").innerHTML =
-            "<h3 style='text-align:center'>No Comics Available for this character :(</h3>";
-        }
+        const comicUrl =
+          "https://gateway.marvel.com:443/v1/public/characters/" +
+          CharacterId +
+          "/comics?apikey=" +
+          key;
+        printComicDetails(comicUrl);
 
         // SERIES URL
-        if (response.data.results[0].series.available > 0) {
-          const seriesUrl = response.data.results[0].series.collectionURI;
-          printSeriesDetails(seriesUrl + "?apikey=" + key);
-        } else {
-          // If There is no series available
-          document.getElementById("series").innerHTML =
-            "<h3 style='text-align:center'>No Series Available for this character :(</h3>";
-        }
+        const seriesUrl =
+          "https://gateway.marvel.com:443/v1/public/characters/" +
+          CharacterId +
+          "/series?apikey=" +
+          key;
+        printSeriesDetails(seriesUrl);
       }
     })
     .catch((err) => console.error(err));
@@ -119,7 +116,7 @@ function addElements() {
 // Updating Character Card as soon as other character is searched
 function updateCharacterData(response) {
   const CharacterId = response.data.results[0].id;
-  console.log(CharacterId);
+  // console.log(CharacterId);
   const name = response.data.results[0].name;
   const description = response.data.results[0].description.trim();
   const imgPath =
@@ -149,46 +146,51 @@ function printComicDetails(url) {
     .then((response) => response.json())
     .then((res) => {
       // console.log(res);
-      const allComicData = res.data.results;
+      if (res.data.total == 0) {
+        document.getElementById("comics").innerHTML =
+          "<h3 style='text-align:center'>No Comics Available for this character :(</h3>";
+      } else {
+        const allComicData = res.data.results;
 
-      const comics = document.getElementById("comics");
-      comics.innerHTML = "";
+        const comics = document.getElementById("comics");
+        comics.innerHTML = "";
 
-      allComicData.forEach((comic) => {
-        const comicPoster =
-          comic.thumbnail.path + "." + comic.thumbnail.extension;
-        const comicTitle = comic.title;
-        const comicDescription = comic.description;
+        allComicData.forEach((comic) => {
+          const comicPoster =
+            comic.thumbnail.path + "." + comic.thumbnail.extension;
+          const comicTitle = comic.title;
+          const comicDescription = comic.description;
 
-        const comicCard = document.createElement("div");
-        comicCard.classList.add("comicCard");
+          const comicCard = document.createElement("div");
+          comicCard.classList.add("comicCard");
 
-        const poster = document.createElement("img");
-        poster.classList.add("tmp");
-        poster.src = comicPoster;
-        poster.alt = comicTitle;
+          const poster = document.createElement("img");
+          poster.classList.add("tmp");
+          poster.src = comicPoster;
+          poster.alt = comicTitle;
 
-        const comicDetail = document.createElement("div");
-        comicDetail.classList.add("comicDetail");
+          const comicDetail = document.createElement("div");
+          comicDetail.classList.add("comicDetail");
 
-        const comicName = document.createElement("div");
-        comicName.classList.add("comicName");
-        comicName.innerText = comicTitle;
+          const comicName = document.createElement("div");
+          comicName.classList.add("comicName");
+          comicName.innerText = comicTitle;
 
-        const comicDes = document.createElement("div");
-        comicDes.classList.add("comicDescription");
-        if (comicDescription == null || comicDescription.trim() == "") {
-          comicDes.innerHTML = "<h3 style='margin: 20px 10px;'> -- </h3>";
-        } else {
-          comicDes.innerHTML = comicDescription;
-        }
+          const comicDes = document.createElement("div");
+          comicDes.classList.add("comicDescription");
+          if (comicDescription == null || comicDescription.trim() == "") {
+            comicDes.innerHTML = "<h3 style='margin: 20px 10px;'> -- </h3>";
+          } else {
+            comicDes.innerHTML = comicDescription;
+          }
 
-        comicDetail.append(comicName, comicDes);
+          comicDetail.append(comicName, comicDes);
 
-        comicCard.append(poster, comicDetail);
+          comicCard.append(poster, comicDetail);
 
-        comics.append(comicCard);
-      });
+          comics.append(comicCard);
+        });
+      }
     })
     .catch((error) => console.log(error));
 }
@@ -198,53 +200,58 @@ function printSeriesDetails(url) {
   fetch(url)
     .then((response) => response.json())
     .then((res) => {
-      const series = document.getElementById("series");
-      series.innerHTML = "";
+      if (res.data.total == 0) {
+        document.getElementById("series").innerHTML =
+          "<h3 style='text-align:center'>No Series Available for this character :(</h3>";
+      } else {
+        const series = document.getElementById("series");
+        series.innerHTML = "";
 
-      const allSeriesData = res.data.results;
+        const allSeriesData = res.data.results;
 
-      allSeriesData.forEach((seriesData) => {
-        const seriesTitle = seriesData.title;
-        const seriesDes = seriesData.description;
-        const startYear = seriesData.startYear;
-        const endYear = seriesData.endYear;
-        const rating = seriesData.rating;
-        const type = seriesData.type;
+        allSeriesData.forEach((seriesData) => {
+          const seriesTitle = seriesData.title;
+          const seriesDes = seriesData.description;
+          const startYear = seriesData.startYear;
+          const endYear = seriesData.endYear;
+          const rating = seriesData.rating;
+          const type = seriesData.type;
 
-        const thumbnail =
-          seriesData.thumbnail.path + "." + seriesData.thumbnail.extension;
+          const thumbnail =
+            seriesData.thumbnail.path + "." + seriesData.thumbnail.extension;
 
-        const seriesCard = document.createElement("div");
-        seriesCard.classList.add("seriesCard");
-        seriesCard.innerHTML = ` <img class='tmp' src='${thumbnail}' alt='${seriesTitle}' />
-          <div class='seriesDetail'>
-            <div class='seriesName'>${seriesTitle}</div>
-            <div class='seriesDescription'>
-              ${
-                seriesDes == null || seriesDes.trim() == ""
-                  ? "<h3 style='margin: 20px 10px;'> -- </h3>"
-                  : seriesDes
-              }
-            </div>
-            <div class='seriesYear'>${
-              startYear == null || startYear == "" ? "-" : startYear
-            } - ${endYear == null || endYear == "" ? "-" : endYear}</div>
-            <div class='seriesRating'>
-              <span>Rating:</span>
-              <span class='rating'>${
-                rating == null || rating == "" ? "Not Provided" : rating
-              }</span>
-            </div>
-            <div class='seriesType'>
-              <span>Type:</span>
-              <span class='type'>${
-                type == null || type == "" ? "Not Provided" : type
-              }</span>
-            </div>
-          </div>`;
+          const seriesCard = document.createElement("div");
+          seriesCard.classList.add("seriesCard");
+          seriesCard.innerHTML = ` <img class='tmp' src='${thumbnail}' alt='${seriesTitle}' />
+            <div class='seriesDetail'>
+              <div class='seriesName'>${seriesTitle}</div>
+              <div class='seriesDescription'>
+                ${
+                  seriesDes == null || seriesDes.trim() == ""
+                    ? "<h3 style='margin: 20px 10px;'> -- </h3>"
+                    : seriesDes
+                }
+              </div>
+              <div class='seriesYear'>${
+                startYear == null || startYear == "" ? "-" : startYear
+              } - ${endYear == null || endYear == "" ? "-" : endYear}</div>
+              <div class='seriesRating'>
+                <span>Rating:</span>
+                <span class='rating'>${
+                  rating == null || rating == "" ? "Not Provided" : rating
+                }</span>
+              </div>
+              <div class='seriesType'>
+                <span>Type:</span>
+                <span class='type'>${
+                  type == null || type == "" ? "Not Provided" : type
+                }</span>
+              </div>
+            </div>`;
 
-        series.append(seriesCard);
-      });
+          series.append(seriesCard);
+        });
+      }
     })
     .catch((error) => console.log(error));
 }
