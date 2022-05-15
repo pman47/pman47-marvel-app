@@ -21,6 +21,27 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+
+    <script type="module">
+      import { characterNames } from "./character-names.js";
+      const dataList = document.createElement("datalist");
+      dataList.id = "nameList";
+
+      characterNames.forEach((name) => {
+        const option = document.createElement("option");
+        option.value = name;
+        dataList.append(option);
+      });
+
+      const form = document.getElementById("form");
+      form.append(dataList);
+
+      window.onload = function funLoad() {
+        const randomCharacter =
+          characterNames[Math.floor(Math.random() * characterNames.length)];
+        fetchDetails(randomCharacter);
+      };
+    </script>
   </head>
   <body id="body">
     <img src="./assets/background.jpg" alt="background" id="BGImage" />
@@ -48,7 +69,6 @@
             id="searchName"
             list="nameList"
             placeholder="Enter Character Name"
-            onkeyup="getNameList(this.value)"
           />
 
           <input type="submit" id="submitBtn" value="Search" title="search" />
@@ -57,6 +77,11 @@
     </nav>
 
     <!-- MAIN CONTENT -->
+
+    <div id="loader">
+      <img src="./assets/loading.gif" alt="Loading" />
+      <h3>Loading</h3>
+    </div>
 
     <div class="container" id="container">
       <div id="characterDetail">
@@ -114,6 +139,6 @@
       </div>
     </footer>
 
-    <script src="./App.js"></script>
+    <script type="text/javascript" src="./App.js"></script>
   </body>
 </html>

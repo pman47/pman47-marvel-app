@@ -1,42 +1,4 @@
 const key = "5a8c32c388f6d60cfb79758f85fb9e29";
-window.onload = function funLoad() {
-  fetchDetails("Daredevil");
-};
-
-// GET List of Character Names For Searching Purpose
-function getNameList(searchName) {
-  if (searchName != "") {
-    fetch(
-      "https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=" +
-        searchName +
-        "&apikey=" +
-        key
-    )
-      .then((response) => response.json())
-      .then((response) => {
-        if (document.getElementById("nameList")) {
-          document.getElementById("nameList").remove();
-        }
-
-        const dataList = document.createElement("datalist");
-        dataList.id = "nameList";
-
-        response.data.results.forEach((res) => {
-          const option = document.createElement("option");
-          option.value = res.name;
-          dataList.append(option);
-        });
-
-        const form = document.getElementById("form");
-        form.append(dataList);
-      })
-      .catch((err) => console.log(err));
-  } else {
-    if (document.getElementById("nameList")) {
-      document.getElementById("nameList").remove();
-    }
-  }
-}
 
 // Main Code
 document.getElementById("submitBtn").addEventListener("click", (e) => {
@@ -49,6 +11,7 @@ document.getElementById("submitBtn").addEventListener("click", (e) => {
     searchNameEle.style.border = "2px solid red";
     searchNameEle.style.borderRadius = "5px";
     searchNameEle.value = "";
+    searchNameEle.focus();
   } else {
     searchNameEle.style.border = "";
     searchNameEle.style.borderRadius = "";
@@ -56,6 +19,8 @@ document.getElementById("submitBtn").addEventListener("click", (e) => {
     fetchDetails(characterName);
   }
 });
+
+const loader = document.getElementById("loader");
 
 // Fetching Character Details
 function fetchDetails(characterName) {
@@ -67,6 +32,11 @@ function fetchDetails(characterName) {
   )
     .then((response) => response.json())
     .then((response) => {
+      loader.style.height = "auto";
+      loader.style.visibility = "visible";
+      loader.style.opacity = "1";
+      document.getElementById("container").style.visibility = "hidden";
+
       // Check if we have data or not
       if (response.data.count == 0) {
         removeElements(); // Remove all elements and show character not found card
@@ -92,6 +62,11 @@ function fetchDetails(characterName) {
           "/series?apikey=" +
           key;
         printSeriesDetails(seriesUrl);
+
+        loader.style.visibility = "hidden";
+        loader.style.opacity = "0";
+        loader.style.height = "0px";
+        document.getElementById("container").style.visibility = "visible";
       }
     })
     .catch((err) => console.error(err));
