@@ -11,34 +11,25 @@
 }
 
 body {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-#BGImage {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  z-index: -100;
-  filter: grayscale(95%);
+  background: #ffffff;
 }
 
 nav,
 footer {
   z-index: 11;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 100%;
   height: 110px;
   background: #202020;
 }
 
 footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
   font-size: 1rem;
   color: #fff;
@@ -62,15 +53,26 @@ footer a {
 }
 
 .navContainer {
-  width: 60%;
+  max-width: 1240px;
+  width: 100%;
+  height: 100%;
+  margin: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
+.navContainer a {
+  margin-left: 1rem;
+}
+
+.navContainer div {
+  margin-right: 1rem;
+}
+
 nav #searchName {
   padding: 10px;
-  width: 180px;
+  width: 300px;
   font-size: 1rem;
   margin: 0;
   border-radius: 0;
@@ -89,15 +91,13 @@ nav #submitBtn {
 }
 
 .container {
-  margin-top: 1rem;
-  margin-bottom: 10rem;
   background: rgba(255, 255, 255, 0.8);
-  width: 60%;
-  border-radius: 1rem;
+  max-width: 1240px;
+  margin: 1rem auto 10rem auto;
 }
 
 #characterDetail {
-  background: rgba(255, 255, 255, 0.8);
+  box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
   border-radius: 1rem;
   width: 90%;
   margin: 40px auto;
@@ -158,18 +158,46 @@ nav #submitBtn {
   border-bottom: 1px solid #202020;
 }
 
+.buttons {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.buttons div {
+  cursor: pointer;
+  font-size: 1rem;
+  margin: 0 5px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background: #fff;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+    rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+
+.buttons div.active {
+  background: #ec1d24;
+  color: #fff;
+  font-weight: bold;
+  cursor: auto;
+}
+
+.buttons div:not(.active):hover {
+  background: #ff6369;
+  color: #fff;
+}
+
 .comicDetails,
 .seriesDetails {
   width: 90%;
   margin: 40px auto;
-  background: rgba(255, 255, 255, 0.6);
   box-shadow: 0px 0px 20px rgba(255, 255, 255, 1);
   border-radius: 1rem;
   padding: 0.5rem;
-  /* display: flex;
-  justify-content: space-around; */
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(5, 1fr);
   grid-gap: 1rem;
 }
 
@@ -178,38 +206,44 @@ nav #submitBtn {
   flex-wrap: wrap;
   border-radius: 1rem;
   width: auto;
-  height: auto;
-  background: #202020;
+  background: transparent;
   margin-bottom: 1rem;
-  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.6);
 }
 
 .comicCard img,
 .seriesCard img {
-  border: 10px solid #202020;
-  border-radius: 1.5rem;
+  cursor: pointer;
   width: 100%;
-  /* height: 325px; */
+  height: auto;
   object-fit: cover;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
+
+.comicCard:hover img,
+.seriesCard:hover img {
+  transform: translateY(-10px);
+}
+
+.comicCard:hover .comicName,
+.seriesCard:hover .seriesName {
+  color: #ec1d24;
 }
 
 .comicDetail,
 .seriesDetail {
   margin: 1rem;
   margin-top: 0;
-  color: #fff;
 }
 
 .comicDetail .comicName,
 .seriesDetail .seriesName {
-  font-size: 1.4rem;
+  cursor: pointer;
+  font-size: 1.2rem;
   font-weight: bold;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #fff;
-  margin: 0.5rem 0;
+  margin-top: 1.5rem;
 }
 
-.comicDetail .comicDescription,
+/* .comicDetail .comicDescription,
 .seriesDetail .seriesDescription {
   font-size: 1.2rem;
 }
@@ -222,8 +256,8 @@ nav #submitBtn {
 
 .seriesYear {
   font-weight: bold;
-  font-size: 1.4rem;
-}
+  font-size: 1.4rem; */
+/* } */
 
 #characterNotFound {
   margin: 200px 0;
@@ -241,10 +275,14 @@ nav #submitBtn {
   transition: 0.3s;
   height: 50vh;
   width: 100%;
-  display: flex;
+  display: none;
   align-items: center;
   flex-direction: column;
   justify-content: center;
+}
+
+#loader.show {
+  display: flex;
 }
 
 #loader img {
@@ -275,49 +313,79 @@ nav #submitBtn {
   }
 }
 
-@media only screen and (max-width: 1250px) {
-  .navContainer {
-    width: 80%;
-  }
-
-  .container {
-    width: 80%;
-  }
+#seriesTitle,
+#series {
+  display: none;
 }
 
 @media only screen and (max-width: 1000px) {
-  .navContainer {
-    width: 95%;
+  .comicDetails,
+  .seriesDetails {
+    grid-template-columns: repeat(4, 1fr);
   }
 
-  .container {
-    width: 95%;
+  #characterName {
+    font-size: 1.5rem;
+  }
+
+  #characterDescription {
+    font-size: 1.3rem;
   }
 }
 
 @media only screen and (max-width: 700px) {
-  .container {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    border-radius: 0;
-    background: rgba(255, 255, 255, 0.5);
+  .comicDetails,
+  .seriesDetails {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .navContainer #searchName {
+    width: 200px;
+  }
+
+  #characterName {
+    font-size: 1.3rem;
+  }
+
+  #characterDescription {
+    font-size: 1rem;
   }
 }
 
 @media only screen and (max-width: 530px) {
   nav {
-    height: 150px;
+    height: 130px;
   }
+
   .navContainer {
-    height: 110px;
+    margin: 0;
     flex-direction: column;
+    justify-content: space-evenly;
+  }
+
+  .navContainer a,
+  .navContainer div {
+    margin: 0;
+  }
+
+  .navContainer div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .navContainer div #searchName {
+    width: 70%;
   }
 
   #characterDetail {
-    margin: 20px auto;
     display: flex;
     flex-direction: column;
+  }
+
+  .comicDetails,
+  .seriesDetails {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 

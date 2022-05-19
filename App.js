@@ -1,4 +1,13 @@
 const key = "5a8c32c388f6d60cfb79758f85fb9e29";
+const loaderEl = document.querySelector("#loader");
+
+const hideLoader = () => {
+  loaderEl.classList.remove("show");
+};
+
+const showLoader = () => {
+  loaderEl.classList.add("show");
+};
 
 // Main Code
 document.getElementById("submitBtn").addEventListener("click", (e) => {
@@ -20,10 +29,10 @@ document.getElementById("submitBtn").addEventListener("click", (e) => {
   }
 });
 
-const loader = document.getElementById("loader");
-
 // Fetching Character Details
 function fetchDetails(characterName) {
+  showLoader();
+
   fetch(
     "https://gateway.marvel.com:443/v1/public/characters?name=" +
       characterName +
@@ -32,11 +41,6 @@ function fetchDetails(characterName) {
   )
     .then((response) => response.json())
     .then((response) => {
-      loader.style.height = "auto";
-      loader.style.visibility = "visible";
-      loader.style.opacity = "1";
-      document.getElementById("container").style.visibility = "hidden";
-
       // Check if we have data or not
       if (response.data.count == 0) {
         removeElements(); // Remove all elements and show character not found card
@@ -62,14 +66,11 @@ function fetchDetails(characterName) {
           "/series?apikey=" +
           key;
         printSeriesDetails(seriesUrl);
-
-        loader.style.visibility = "hidden";
-        loader.style.opacity = "0";
-        loader.style.height = "0px";
-        document.getElementById("container").style.visibility = "visible";
       }
     })
     .catch((err) => console.error(err));
+
+  hideLoader();
 }
 
 // Removing unnecessary elements from page
@@ -151,15 +152,15 @@ function printComicDetails(url) {
           comicName.classList.add("comicName");
           comicName.innerText = comicTitle;
 
-          const comicDes = document.createElement("div");
-          comicDes.classList.add("comicDescription");
-          if (comicDescription == null || comicDescription.trim() == "") {
-            comicDes.innerHTML = "<h3 style='margin: 20px 10px;'> -- </h3>";
-          } else {
-            comicDes.innerHTML = comicDescription;
-          }
+          // const comicDes = document.createElement("div");
+          // comicDes.classList.add("comicDescription");
+          // if (comicDescription == null || comicDescription.trim() == "") {
+          //   comicDes.innerHTML = "<h3 style='margin: 20px 10px;'> -- </h3>";
+          // } else {
+          //   comicDes.innerHTML = comicDescription;
+          // }
 
-          comicDetail.append(comicName, comicDes);
+          comicDetail.append(comicName);
 
           comicCard.append(poster, comicDetail);
 
@@ -200,33 +201,63 @@ function printSeriesDetails(url) {
           seriesCard.innerHTML = ` <img class='tmp' src='${thumbnail}' alt='${seriesTitle}' />
             <div class='seriesDetail'>
               <div class='seriesName'>${seriesTitle}</div>
-              <div class='seriesDescription'>
-                ${
-                  seriesDes == null || seriesDes.trim() == ""
-                    ? "<h3 style='margin: 20px 10px;'> -- </h3>"
-                    : seriesDes
-                }
-              </div>
-              <div class='seriesYear'>${
-                startYear == null || startYear == "" ? "-" : startYear
-              } - ${endYear == null || endYear == "" ? "-" : endYear}</div>
-              <div class='seriesRating'>
-                <span>Rating:</span>
-                <span class='rating'>${
-                  rating == null || rating == "" ? "Not Provided" : rating
-                }</span>
-              </div>
-              <div class='seriesType'>
-                <span>Type:</span>
-                <span class='type'>${
-                  type == null || type == "" ? "Not Provided" : type
-                }</span>
-              </div>
             </div>`;
+          // <div class='seriesDescription'>
+          //     ${
+          //       seriesDes == null || seriesDes.trim() == ""
+          //         ? "<h3 style='margin: 20px 10px;'> -- </h3>"
+          //         : seriesDes
+          //     }
+          //   </div>
+          //   <div class='seriesYear'>${
+          //     startYear == null || startYear == "" ? "-" : startYear
+          //   } - ${endYear == null || endYear == "" ? "-" : endYear}</div>
+          //   <div class='seriesRating'>
+          //     <span>Rating:</span>
+          //     <span class='rating'>${
+          //       rating == null || rating == "" ? "Not Provided" : rating
+          //     }</span>
+          //   </div>
+          //   <div class='seriesType'>
+          //     <span>Type:</span>
+          //     <span class='type'>${
+          //       type == null || type == "" ? "Not Provided" : type
+          //     }</span>
+          //   </div>
 
           series.append(seriesCard);
         });
       }
     })
     .catch((error) => console.log(error));
+}
+
+function showSeries() {
+  const allCatBtns = document.getElementsByClassName("catBtns");
+  for (let i = 0; i < allCatBtns.length; i++) {
+    allCatBtns[i].classList.remove("active");
+  }
+
+  document.getElementById("showSeries").classList.add("active");
+
+  document.getElementById("comicTitle").style.display = "none";
+  document.getElementById("comics").style.display = "none";
+
+  document.getElementById("seriesTitle").style.display = "block";
+  document.getElementById("series").style.display = "grid";
+}
+
+function showComics() {
+  const allCatBtns = document.getElementsByClassName("catBtns");
+  for (let i = 0; i < allCatBtns.length; i++) {
+    allCatBtns[i].classList.remove("active");
+  }
+
+  document.getElementById("showComics").classList.add("active");
+
+  document.getElementById("comicTitle").style.display = "block";
+  document.getElementById("comics").style.display = "grid";
+
+  document.getElementById("seriesTitle").style.display = "none";
+  document.getElementById("series").style.display = "none";
 }
