@@ -5,7 +5,9 @@ let CharacterId,
   comicOffset = 0,
   comicTotal,
   seriesOffset = 0,
-  seriesTotal;
+  seriesTotal,
+  eventsOffset = 0,
+  eventsTotal;
 
 const hideLoader = () => {
   loaderEl.classList.remove("show");
@@ -45,18 +47,15 @@ function fetchDetails(characterName) {
   )
     .then((response) => response.json())
     .then((response) => {
-      // Check if we have data or not
       if (response.data.count == 0) {
-        removeElements(); // Remove all elements and show character not found card
+        removeElements();
       } else {
         showLoader();
-        // If we found data then
-        addElements(); // Add Body Elements
-        updateCharacterData(response); // Update character Image, Name, Description
+        addElements();
+        updateCharacterData(response);
 
         CharacterId = response.data.results[0].id;
 
-        // COMIC URL
         const comicUrl =
           "https://gateway.marvel.com:443/v1/public/characters/" +
           CharacterId +
@@ -64,13 +63,20 @@ function fetchDetails(characterName) {
           key;
         printComicDetails(comicUrl);
 
-        // SERIES URL
         const seriesUrl =
           "https://gateway.marvel.com:443/v1/public/characters/" +
           CharacterId +
           "/series?apikey=" +
           key;
         printSeriesDetails(seriesUrl);
+
+        const eventsUrl =
+          "https://gateway.marvel.com:443/v1/public/characters/" +
+          CharacterId +
+          "/events?apikey=" +
+          key;
+        printEventsDetails(eventsUrl);
+
         hideLoader();
       }
     })
@@ -128,8 +134,8 @@ function printComicDetails(url) {
       // console.log(res);
       comicTotal = res.data.total;
       if (comicTotal == 0) {
-        document.getElementById("comics").innerHTML =
-          "<h3 style='text-align:center'>No Comics Available for this character :(</h3>";
+        const comics = document.getElementById("comics");
+        comics.innerHTML = "<h3>No Comics Available for this character :(</h3>";
       } else {
         const allComicData = res.data.results;
 
@@ -175,8 +181,8 @@ function printSeriesDetails(url) {
     .then((res) => {
       seriesTotal = res.data.total;
       if (seriesTotal == 0) {
-        document.getElementById("series").innerHTML =
-          "<h3 style='text-align:center'>No Series Available for this character :(</h3>";
+        const series = document.getElementById("series");
+        series.innerHTML = "<h3>No Series Available for this character :(</h3>";
       } else {
         const series = document.getElementById("series");
         series.innerHTML = "";
@@ -203,6 +209,40 @@ function printSeriesDetails(url) {
     .catch((error) => console.log(error));
 }
 
+function printEventsDetails(url) {
+  fetch(url)
+    .then((response) => response.json())
+    .then((res) => {
+      eventsTotal = res.data.total;
+      if (eventsTotal == 0) {
+        const events = document.getElementById("events");
+        events.innerHTML = "<h3>No events Available for this character :(</h3>";
+      } else {
+        const events = document.getElementById("events");
+        events.innerHTML = "";
+
+        const alleventsData = res.data.results;
+
+        alleventsData.forEach((eventsData) => {
+          const eventsTitle = eventsData.title;
+
+          const thumbnail =
+            eventsData.thumbnail.path + "." + eventsData.thumbnail.extension;
+
+          const eventsCard = document.createElement("div");
+          eventsCard.classList.add("eventsCard");
+          eventsCard.innerHTML = ` <img class='tmp' src='${thumbnail}' alt='${eventsTitle}' />
+            <div class='eventsDetail'>
+              <div class='eventsName'>${eventsTitle}</div>
+            </div>`;
+
+          events.append(eventsCard);
+        });
+      }
+    })
+    .catch((error) => console.log(error));
+}
+
 function showSeries() {
   const allCatBtns = document.getElementsByClassName("catBtns");
   for (let i = 0; i < allCatBtns.length; i++) {
@@ -216,6 +256,9 @@ function showSeries() {
 
   document.getElementById("seriesTitle").style.display = "block";
   document.getElementById("series").style.display = "grid";
+
+  document.getElementById("eventsTitle").style.display = "none";
+  document.getElementById("events").style.display = "none";
 }
 
 function showComics() {
@@ -228,6 +271,27 @@ function showComics() {
 
   document.getElementById("comicTitle").style.display = "block";
   document.getElementById("comics").style.display = "grid";
+
+  document.getElementById("seriesTitle").style.display = "none";
+  document.getElementById("series").style.display = "none";
+
+  document.getElementById("eventsTitle").style.display = "none";
+  document.getElementById("events").style.display = "none";
+}
+
+function showEvents() {
+  const allCatBtns = document.getElementsByClassName("catBtns");
+  for (let i = 0; i < allCatBtns.length; i++) {
+    allCatBtns[i].classList.remove("active");
+  }
+
+  document.getElementById("showEvents").classList.add("active");
+
+  document.getElementById("eventsTitle").style.display = "block";
+  document.getElementById("events").style.display = "grid";
+
+  document.getElementById("comicTitle").style.display = "none";
+  document.getElementById("comics").style.display = "none";
 
   document.getElementById("seriesTitle").style.display = "none";
   document.getElementById("series").style.display = "none";
@@ -326,6 +390,45 @@ function addMoreSeries() {
     });
 }
 
+function addMoreEvents() {
+  let url =
+    "https://gateway.marvel.com:443/v1/public/characters/" +
+    CharacterId +
+    "/events?offset=" +
+    eventsOffset +
+    "&apikey=" +
+    key;
+
+  fetch(url)
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.data.results.length > 0) {
+        const events = document.getElementById("events");
+
+        const alleventsData = res.data.results;
+
+        alleventsData.forEach((eventsData) => {
+          const eventsTitle = eventsData.title;
+
+          const thumbnail =
+            eventsData.thumbnail.path + "." + eventsData.thumbnail.extension;
+
+          const eventsCard = document.createElement("div");
+          eventsCard.classList.add("eventsCard");
+          eventsCard.innerHTML = ` <img class='tmp' src='${thumbnail}' alt='${eventsTitle}' />
+            <div class='eventsDetail'>
+              <div class='eventsName'>${eventsTitle}</div>
+            </div>`;
+
+          events.append(eventsCard);
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
 window.addEventListener("scroll", () => {
   const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
   if (scrollTop + clientHeight >= scrollHeight - 110) {
@@ -339,6 +442,11 @@ window.addEventListener("scroll", () => {
       if (seriesOffset < seriesTotal) {
         seriesOffset += 20;
         addMoreSeries();
+      }
+    } else {
+      if (eventsOffset < eventsTotal) {
+        eventsOffset += 20;
+        addMoreEvents();
       }
     }
   }
