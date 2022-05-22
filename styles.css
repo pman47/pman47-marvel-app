@@ -320,6 +320,164 @@ nav #submitBtn {
   }
 }
 
+#moreDetails {
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 1111;
+  display: none;
+  justify-content: center;
+  overflow-y: scroll;
+}
+
+#moreDetails .closeBtn {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: bold;
+  background: red;
+}
+
+#moreDetails .info {
+  max-width: 1250px;
+  margin-top: 4rem;
+}
+
+#moreDetails .combo {
+  padding: 2rem;
+  display: flex;
+}
+
+#moreDetails .combo img {
+  height: 400px;
+}
+
+#moreDetails .combo .moreInfo {
+  margin: 2rem;
+}
+
+#moreDetails .combo .moreInfo #moreComicTitle {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.8rem;
+}
+
+#moreDetails .combo .moreInfo #comicDes {
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
+}
+
+#moreDetails .combo .moreInfo #fromSeries {
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
+}
+
+#moreDetails .combo .moreInfo #comicPrice {
+  width: 20%;
+  cursor: pointer;
+  font-size: 1.3rem;
+  padding: 1rem 0;
+  text-align: center;
+  font-weight: bold;
+  background: red;
+}
+
+#imageContainer p,
+#characterCon p,
+#creatorCon p {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  margin-left: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+#comicImages {
+  width: 100%;
+  margin-bottom: 3rem;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 0.5rem;
+  height: 500px;
+  display: flex;
+  overflow-x: scroll;
+}
+
+#comicImages::-webkit-scrollbar {
+  display: none;
+}
+
+#comicImages img {
+  cursor: pointer;
+  margin: 0.5rem;
+}
+
+#characters,
+#creators {
+  margin-bottom: 3rem;
+  /* background: rgba(0, 0, 0, 0.6); */
+  padding: 0.5rem 0;
+  display: flex;
+  overflow-x: scroll;
+}
+
+#creators {
+  height: 300px;
+}
+
+#characters .characterContainer,
+#creators .creatorContainer {
+  cursor: pointer;
+  margin-right: 1.3rem;
+}
+
+#characters .characterContainer:hover,
+#creators .creatorContainer:hover {
+  transform: scale(1.05);
+}
+
+#characters .characterContainer img,
+#creators .creatorContainer img {
+  height: 8rem;
+  width: 8rem;
+  object-fit: cover;
+  border-radius: 4rem;
+  margin-bottom: 0.5rem;
+}
+
+#characters .characterContainer p {
+  width: 8rem;
+  margin: 0;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+#creators .creatorContainer p {
+  width: 8rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.role {
+  color: #fff;
+}
+
+.roleContainer {
+  color: red;
+}
+
+#characters::-webkit-scrollbar,
+#creators::-webkit-scrollbar {
+  display: none;
+}
+
+#moreDetails,
 #seriesTitle,
 #series,
 #events,

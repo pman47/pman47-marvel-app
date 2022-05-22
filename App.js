@@ -126,6 +126,19 @@ function updateCharacterData(response) {
   }
 }
 
+function closeMoreDetail() {
+  document.getElementById("moreDetails").style.display = "none";
+  document.getElementById("body").style.overflow = "auto";
+}
+
+function seeMoreDetailsAboutComics() {
+  const comicId = this.dataset.id;
+  const moreDetails = document.getElementById("moreDetails");
+  moreDetails.style.display = "flex";
+  // moreDetails.innerHTML = `<div>${comicId}</div>`;
+  document.getElementById("body").style.overflow = "hidden";
+}
+
 // Printing Comic Details of character
 function printComicDetails(url) {
   fetch(url)
@@ -146,10 +159,13 @@ function printComicDetails(url) {
           const comicPoster =
             comic.thumbnail.path + "." + comic.thumbnail.extension;
           const comicTitle = comic.title;
-          const comicDescription = comic.description;
 
           const comicCard = document.createElement("div");
           comicCard.classList.add("comicCard");
+          comicCard.dataset.type = "comic";
+          comicCard.dataset.id = comic.id;
+
+          comicCard.addEventListener("click", seeMoreDetailsAboutComics);
 
           const poster = document.createElement("img");
           poster.classList.add("tmp");
