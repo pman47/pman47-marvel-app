@@ -135,7 +135,116 @@ function seeMoreDetailsAboutComics() {
   const comicId = this.dataset.id;
   const moreDetails = document.getElementById("moreDetails");
   moreDetails.style.display = "flex";
-  // moreDetails.innerHTML = `<div>${comicId}</div>`;
+  moreDetails.innerHTML = "";
+
+  fetch(
+    "https://gateway.marvel.com:443/v1/public/comics/" +
+      comicId +
+      "?apikey=" +
+      key
+  )
+    .then((res) => res.json())
+    .then((res) => {
+      // console.log(res);
+      let comicDetails = res.data.results[0];
+      let comicImg =
+        comicDetails.thumbnail.path + "." + comicDetails.thumbnail.extension;
+      let comicTitle = comicDetails.title;
+      let comicDes =
+        comicDetails.description == null || comicDetails.description == ""
+          ? "No Description Mentioned"
+          : comicDetails.description;
+      let seriesName = comicDetails.series.name;
+      let prices = comicDetails.prices[0].price;
+      let images = comicDetails.images;
+
+      moreDetails.innerHTML = ` <div class="closeBtn" onclick="closeMoreDetail()">X</div>
+      <div class="info">
+      <div class="combo">
+          <img
+            src="${comicImg}"
+            alt=""
+          />
+          <div class="moreInfo">
+            <p id="moreComicTitle">${comicTitle}</p>
+            <p id="comicDes">
+              ${comicDes}
+            </p>
+            <p id="fromSeries">
+              Series : <span>${seriesName}</span>
+            </p>
+            <div id="comicPrice">$${prices}</div>
+          </div>
+        </div>
+      </div>
+      `;
+
+      const info = document.querySelector(".info");
+
+      const imageContainer = document.createElement("div");
+      imageContainer.id = "imageContainer";
+
+      const comicImgTitle = document.createElement("p");
+      comicImgTitle.classList.add("comicImgTitle");
+      comicImgTitle.textContent = "Comic Images :";
+
+      imageContainer.append(comicImgTitle);
+
+      const comicImages = document.createElement("div");
+      comicImages.id = "comicImages";
+
+      for (image of images) {
+        const img = document.createElement("img");
+        img.src = image.path + "." + image.extension;
+        img.classList.add("comicImage");
+        comicImages.append(img);
+      }
+      imageContainer.append(comicImages);
+
+      const characterCon = document.createElement("div");
+      characterCon.id = "characterCon";
+
+      const characterTitle = document.createElement("p");
+      characterTitle.textContent = "Characters :";
+
+      characterCon.append(characterTitle);
+
+      const characters = document.createElement("div");
+      characters.id = "characters";
+
+      fetch(
+        "https://gateway.marvel.com:443/v1/public/comics/" +
+          comicId +
+          "/characters?apikey=" +
+          key
+      )
+        .then((res) => res.json())
+        .then((res) => {
+          let characterDetails = res.data.results;
+          for (character of characterDetails) {
+            const characterContainer = document.createElement("div");
+            characterContainer.classList.add("characterContainer");
+
+            const img = document.createElement("img");
+            img.src =
+              character.thumbnail.path + "." + character.thumbnail.extension;
+
+            const p = document.createElement("p");
+            p.classList.add("characteraName");
+            p.textContent = character.name;
+
+            characterContainer.append(img, p);
+            characters.append(characterContainer);
+          }
+        })
+        .catch((err) => console.log(err));
+
+      characterCon.append(characters);
+
+      info.append(imageContainer, characterCon);
+    })
+    .catch((err) => console.log(err));
+
   document.getElementById("body").style.overflow = "hidden";
 }
 

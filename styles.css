@@ -350,6 +350,7 @@ nav #submitBtn {
 }
 
 #moreDetails .combo {
+  margin-top: 5rem;
   padding: 2rem;
   display: flex;
 }
