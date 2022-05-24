@@ -199,6 +199,7 @@ function seeMoreDetailsAboutComics() {
         img.classList.add("comicImage");
         comicImages.append(img);
       }
+
       imageContainer.append(comicImages);
 
       const characterCon = document.createElement("div");
@@ -242,6 +243,48 @@ function seeMoreDetailsAboutComics() {
       characterCon.append(characters);
 
       info.append(imageContainer, characterCon);
+
+      const creatorCon = document.createElement("div");
+      creatorCon.id = "creatorCon";
+
+      const creatorTitle = document.createElement("p");
+      creatorTitle.textContent = "Creators :";
+
+      creatorCon.append(creatorTitle);
+
+      const creators = document.createElement("div");
+      creators.id = "creators";
+
+      fetch(
+        "https://gateway.marvel.com:443/v1/public/comics/" +
+          comicId +
+          "/creators?apikey=" +
+          key
+      )
+        .then((res) => res.json())
+        .then((res) => {
+          let creatorDetails = res.data.results;
+          for (creator of creatorDetails) {
+            const creatorContainer = document.createElement("div");
+            creatorContainer.classList.add("creatorContainer");
+
+            const img = document.createElement("img");
+            img.src =
+              creator.thumbnail.path + "." + creator.thumbnail.extension;
+
+            const p = document.createElement("p");
+            p.classList.add("createrName");
+            p.textContent = creator.fullName;
+
+            creatorContainer.append(img, p);
+            creators.append(creatorContainer);
+          }
+
+          creatorCon.append(creators);
+
+          info.append(creatorCon);
+        })
+        .catch((err) => console.log(err));
     })
     .catch((err) => console.log(err));
 
