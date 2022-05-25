@@ -186,23 +186,26 @@ function moreDetailsAboutComics(comicId) {
       const imageContainer = document.createElement("div");
       imageContainer.id = "imageContainer";
 
-      const comicImgTitle = document.createElement("p");
-      comicImgTitle.classList.add("comicImgTitle");
-      comicImgTitle.textContent = "Comic Images :";
+      if (images.length > 0) {
+        const comicImgTitle = document.createElement("p");
+        comicImgTitle.classList.add("comicImgTitle");
+        comicImgTitle.textContent = "Comic Images :";
 
-      imageContainer.append(comicImgTitle);
+        imageContainer.append(comicImgTitle);
 
-      const comicImages = document.createElement("div");
-      comicImages.id = "comicImages";
+        const comicImages = document.createElement("div");
+        comicImages.id = "comicImages";
 
-      for (image of images) {
-        const img = document.createElement("img");
-        img.src = image.path + "." + image.extension;
-        img.classList.add("comicImage");
-        comicImages.append(img);
+        for (image of images) {
+          const img = document.createElement("img");
+          img.src = image.path + "." + image.extension;
+          img.classList.add("comicImage");
+          comicImages.append(img);
+        }
+
+        imageContainer.append(comicImages);
+        info.append(imageContainer);
       }
-
-      imageContainer.append(comicImages);
 
       const characterCon = document.createElement("div");
       characterCon.id = "characterCon";
@@ -224,27 +227,35 @@ function moreDetailsAboutComics(comicId) {
         .then((res) => res.json())
         .then((res) => {
           let characterDetails = res.data.results;
-          for (character of characterDetails) {
-            const characterContainer = document.createElement("div");
-            characterContainer.classList.add("characterContainer");
+          if (characterDetails.length > 0) {
+            for (character of characterDetails) {
+              const characterContainer = document.createElement("div");
+              characterContainer.classList.add("characterContainer");
 
-            const img = document.createElement("img");
-            img.src =
-              character.thumbnail.path + "." + character.thumbnail.extension;
+              const img = document.createElement("img");
+              img.src =
+                character.thumbnail.path + "." + character.thumbnail.extension;
 
-            const p = document.createElement("p");
-            p.classList.add("characteraName");
-            p.textContent = character.name;
+              const p = document.createElement("p");
+              p.classList.add("characteraName");
+              p.textContent = character.name;
 
-            characterContainer.append(img, p);
-            characters.append(characterContainer);
+              characterContainer.append(img, p);
+              characters.append(characterContainer);
+            }
+          } else {
+            const noCharacter = document.createElement("div");
+            noCharacter.id = "noDetails";
+            noCharacter.innerHTML =
+              "<span>No characters details provided. :( </span>";
+            characters.append(noCharacter);
           }
         })
         .catch((err) => console.log(err));
 
       characterCon.append(characters);
 
-      info.append(imageContainer, characterCon);
+      info.append(characterCon);
 
       const creatorCon = document.createElement("div");
       creatorCon.id = "creatorCon";
@@ -266,20 +277,28 @@ function moreDetailsAboutComics(comicId) {
         .then((res) => res.json())
         .then((res) => {
           let creatorDetails = res.data.results;
-          for (creator of creatorDetails) {
-            const creatorContainer = document.createElement("div");
-            creatorContainer.classList.add("creatorContainer");
+          if (creatorDetails.length > 0) {
+            for (creator of creatorDetails) {
+              const creatorContainer = document.createElement("div");
+              creatorContainer.classList.add("creatorContainer");
 
-            const img = document.createElement("img");
-            img.src =
-              creator.thumbnail.path + "." + creator.thumbnail.extension;
+              const img = document.createElement("img");
+              img.src =
+                creator.thumbnail.path + "." + creator.thumbnail.extension;
 
-            const p = document.createElement("p");
-            p.classList.add("createrName");
-            p.textContent = creator.fullName;
+              const p = document.createElement("p");
+              p.classList.add("createrName");
+              p.textContent = creator.fullName;
 
-            creatorContainer.append(img, p);
-            creators.append(creatorContainer);
+              creatorContainer.append(img, p);
+              creators.append(creatorContainer);
+            }
+          } else {
+            const noCharacter = document.createElement("div");
+            noCharacter.id = "noDetails";
+            noCharacter.innerHTML =
+              "<span>No creator details provided. :( </span>";
+            creators.append(noCharacter);
           }
 
           creatorCon.append(creators);
@@ -355,20 +374,28 @@ function moreDetailsAboutSeries(seriesId) {
         .then((res) => res.json())
         .then((res) => {
           let characterDetails = res.data.results;
-          for (character of characterDetails) {
-            const characterContainer = document.createElement("div");
-            characterContainer.classList.add("characterContainer");
+          if (characterDetails.length > 0) {
+            for (character of characterDetails) {
+              const characterContainer = document.createElement("div");
+              characterContainer.classList.add("characterContainer");
 
-            const img = document.createElement("img");
-            img.src =
-              character.thumbnail.path + "." + character.thumbnail.extension;
+              const img = document.createElement("img");
+              img.src =
+                character.thumbnail.path + "." + character.thumbnail.extension;
 
-            const p = document.createElement("p");
-            p.classList.add("characteraName");
-            p.textContent = character.name;
+              const p = document.createElement("p");
+              p.classList.add("characteraName");
+              p.textContent = character.name;
 
-            characterContainer.append(img, p);
-            characters.append(characterContainer);
+              characterContainer.append(img, p);
+              characters.append(characterContainer);
+            }
+          } else {
+            const noCharacter = document.createElement("div");
+            noCharacter.id = "noDetails";
+            noCharacter.innerHTML =
+              "<span>No characters details provided. :( </span>";
+            characters.append(noCharacter);
           }
         })
         .catch((err) => console.log(err));
@@ -397,20 +424,28 @@ function moreDetailsAboutSeries(seriesId) {
         .then((res) => res.json())
         .then((res) => {
           let creatorDetails = res.data.results;
-          for (creator of creatorDetails) {
-            const creatorContainer = document.createElement("div");
-            creatorContainer.classList.add("creatorContainer");
+          if (creatorDetails.length > 0) {
+            for (creator of creatorDetails) {
+              const creatorContainer = document.createElement("div");
+              creatorContainer.classList.add("creatorContainer");
 
-            const img = document.createElement("img");
-            img.src =
-              creator.thumbnail.path + "." + creator.thumbnail.extension;
+              const img = document.createElement("img");
+              img.src =
+                creator.thumbnail.path + "." + creator.thumbnail.extension;
 
-            const p = document.createElement("p");
-            p.classList.add("createrName");
-            p.textContent = creator.fullName;
+              const p = document.createElement("p");
+              p.classList.add("createrName");
+              p.textContent = creator.fullName;
 
-            creatorContainer.append(img, p);
-            creators.append(creatorContainer);
+              creatorContainer.append(img, p);
+              creators.append(creatorContainer);
+            }
+          } else {
+            const noCharacter = document.createElement("div");
+            noCharacter.id = "noDetails";
+            noCharacter.innerHTML =
+              "<span>No creator details provided. :( </span>";
+            creators.append(noCharacter);
           }
 
           creatorCon.append(creators);
@@ -486,20 +521,28 @@ function moreDetailsAboutEvents(eventId) {
         .then((res) => res.json())
         .then((res) => {
           let characterDetails = res.data.results;
-          for (character of characterDetails) {
-            const characterContainer = document.createElement("div");
-            characterContainer.classList.add("characterContainer");
+          if (characterDetails.length > 0) {
+            for (character of characterDetails) {
+              const characterContainer = document.createElement("div");
+              characterContainer.classList.add("characterContainer");
 
-            const img = document.createElement("img");
-            img.src =
-              character.thumbnail.path + "." + character.thumbnail.extension;
+              const img = document.createElement("img");
+              img.src =
+                character.thumbnail.path + "." + character.thumbnail.extension;
 
-            const p = document.createElement("p");
-            p.classList.add("characteraName");
-            p.textContent = character.name;
+              const p = document.createElement("p");
+              p.classList.add("characteraName");
+              p.textContent = character.name;
 
-            characterContainer.append(img, p);
-            characters.append(characterContainer);
+              characterContainer.append(img, p);
+              characters.append(characterContainer);
+            }
+          } else {
+            const noCharacter = document.createElement("div");
+            noCharacter.id = "noDetails";
+            noCharacter.innerHTML =
+              "<span>No characters details provided. :( </span>";
+            characters.append(noCharacter);
           }
         })
         .catch((err) => console.log(err));
@@ -528,20 +571,28 @@ function moreDetailsAboutEvents(eventId) {
         .then((res) => res.json())
         .then((res) => {
           let creatorDetails = res.data.results;
-          for (creator of creatorDetails) {
-            const creatorContainer = document.createElement("div");
-            creatorContainer.classList.add("creatorContainer");
+          if (creatorDetails.length > 0) {
+            for (creator of creatorDetails) {
+              const creatorContainer = document.createElement("div");
+              creatorContainer.classList.add("creatorContainer");
 
-            const img = document.createElement("img");
-            img.src =
-              creator.thumbnail.path + "." + creator.thumbnail.extension;
+              const img = document.createElement("img");
+              img.src =
+                creator.thumbnail.path + "." + creator.thumbnail.extension;
 
-            const p = document.createElement("p");
-            p.classList.add("createrName");
-            p.textContent = creator.fullName;
+              const p = document.createElement("p");
+              p.classList.add("createrName");
+              p.textContent = creator.fullName;
 
-            creatorContainer.append(img, p);
-            creators.append(creatorContainer);
+              creatorContainer.append(img, p);
+              creators.append(creatorContainer);
+            }
+          } else {
+            const noCharacter = document.createElement("div");
+            noCharacter.id = "noDetails";
+            noCharacter.innerHTML =
+              "<span>No creator details provided. :( </span>";
+            creators.append(noCharacter);
           }
 
           creatorCon.append(creators);

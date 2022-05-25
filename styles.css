@@ -469,6 +469,18 @@ nav #submitBtn {
   display: none;
 }
 
+#noDetails {
+  height: 100px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#noDetails span {
+  font-size: 1.5rem;
+}
+
 #moreDetails,
 #seriesTitle,
 #series,
@@ -600,6 +612,10 @@ nav #submitBtn {
   .seriesDetails,
   .eventsDetails {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  #moreDetails .info {
+    margin-top: 0;
   }
 
   #moreDetails .combo {
