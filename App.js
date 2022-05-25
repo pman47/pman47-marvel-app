@@ -290,7 +290,7 @@ function moreDetailsAboutComics(comicId) {
 }
 
 function moreDetailsAboutSeries(seriesId) {
-  console.log(seriesId);
+  // console.log(seriesId);
   const moreDetails = document.getElementById("moreDetails");
   moreDetails.style.display = "flex";
   moreDetails.innerHTML = "";
@@ -388,6 +388,136 @@ function moreDetailsAboutSeries(seriesId) {
       fetch(
         "https://gateway.marvel.com:443/v1/public/series/" +
           seriesId +
+          "/creators?limit=100&apikey=" +
+          key
+      )
+        .then((res) => res.json())
+        .then((res) => {
+          let creatorDetails = res.data.results;
+          for (creator of creatorDetails) {
+            const creatorContainer = document.createElement("div");
+            creatorContainer.classList.add("creatorContainer");
+
+            const img = document.createElement("img");
+            img.src =
+              creator.thumbnail.path + "." + creator.thumbnail.extension;
+
+            const p = document.createElement("p");
+            p.classList.add("createrName");
+            p.textContent = creator.fullName;
+
+            creatorContainer.append(img, p);
+            creators.append(creatorContainer);
+          }
+
+          creatorCon.append(creators);
+
+          info.append(creatorCon);
+        })
+        .catch((err) => console.log(err));
+    })
+    .catch((err) => console.log(err));
+}
+
+function moreDetailsAboutEvents(eventId) {
+  console.log(eventId);
+  const moreDetails = document.getElementById("moreDetails");
+  moreDetails.style.display = "flex";
+  moreDetails.innerHTML = "";
+
+  fetch(
+    "https://gateway.marvel.com:443/v1/public/events/" +
+      eventId +
+      "?apikey=" +
+      key
+  )
+    .then((res) => res.json())
+    .then((res) => {
+      // console.log(res);
+      let eventDetails = res.data.results[0];
+      let eventImg =
+        eventDetails.thumbnail.path + "." + eventDetails.thumbnail.extension;
+      let eventTitle = eventDetails.title;
+      let eventDes =
+        eventDetails.description == null || eventDetails.description == ""
+          ? "No Description Mentioned"
+          : eventDetails.description;
+
+      moreDetails.innerHTML = ` <div class="closeBtn" onclick="closeMoreDetail()">X</div>
+      <div class="info">
+      <div class="combo">
+          <img
+            src="${eventImg}"
+            alt=""
+          />
+          <div class="moreInfo">
+            <p id="moreComicTitle">${eventTitle}</p>
+            <p id="comicDes">
+              ${eventDes}
+            </p>
+          </div>
+        </div>
+      </div>
+      `;
+
+      const info = document.querySelector(".info");
+
+      const characterCon = document.createElement("div");
+      characterCon.id = "characterCon";
+
+      const characterTitle = document.createElement("p");
+      characterTitle.textContent = "Characters :";
+
+      characterCon.append(characterTitle);
+
+      const characters = document.createElement("div");
+      characters.id = "characters";
+
+      fetch(
+        "https://gateway.marvel.com:443/v1/public/events/" +
+          eventId +
+          "/characters?limit=100&apikey=" +
+          key
+      )
+        .then((res) => res.json())
+        .then((res) => {
+          let characterDetails = res.data.results;
+          for (character of characterDetails) {
+            const characterContainer = document.createElement("div");
+            characterContainer.classList.add("characterContainer");
+
+            const img = document.createElement("img");
+            img.src =
+              character.thumbnail.path + "." + character.thumbnail.extension;
+
+            const p = document.createElement("p");
+            p.classList.add("characteraName");
+            p.textContent = character.name;
+
+            characterContainer.append(img, p);
+            characters.append(characterContainer);
+          }
+        })
+        .catch((err) => console.log(err));
+
+      characterCon.append(characters);
+
+      info.append(characterCon);
+
+      const creatorCon = document.createElement("div");
+      creatorCon.id = "creatorCon";
+
+      const creatorTitle = document.createElement("p");
+      creatorTitle.textContent = "Creators :";
+
+      creatorCon.append(creatorTitle);
+
+      const creators = document.createElement("div");
+      creators.id = "creators";
+
+      fetch(
+        "https://gateway.marvel.com:443/v1/public/events/" +
+          eventId +
           "/creators?limit=100&apikey=" +
           key
       )
@@ -542,6 +672,11 @@ function printEventsDetails(url) {
 
           const eventsCard = document.createElement("div");
           eventsCard.classList.add("eventsCard");
+          eventsCard.dataset.type = "events";
+          eventsCard.dataset.id = eventsData.id;
+
+          eventsCard.addEventListener("click", showMoreDetails);
+
           eventsCard.innerHTML = ` <img class='tmp' src='${thumbnail}' alt='${eventsTitle}' />
             <div class='eventsDetail'>
               <div class='eventsName'>${eventsTitle}</div>
@@ -733,6 +868,11 @@ function addMoreEvents() {
 
           const eventsCard = document.createElement("div");
           eventsCard.classList.add("eventsCard");
+          eventsCard.dataset.type = "events";
+          eventsCard.dataset.id = eventsData.id;
+
+          eventsCard.addEventListener("click", showMoreDetails);
+
           eventsCard.innerHTML = ` <img class='tmp' src='${thumbnail}' alt='${eventsTitle}' />
             <div class='eventsDetail'>
               <div class='eventsName'>${eventsTitle}</div>

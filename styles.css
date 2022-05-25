@@ -422,22 +422,25 @@ nav #submitBtn {
   /* background: rgba(0, 0, 0, 0.6); */
   padding: 0.5rem 0;
   display: flex;
-  overflow-x: scroll;
+  flex-wrap: wrap;
+  /* overflow-x: scroll; */
 }
 
 #creators {
-  height: 300px;
+  padding-bottom: 10rem;
 }
 
 #characters .characterContainer,
 #creators .creatorContainer {
   cursor: pointer;
-  margin-right: 1.3rem;
+  margin: 1rem;
 }
 
 #characters .characterContainer:hover,
 #creators .creatorContainer:hover {
   transform: scale(1.05);
+  color: #ff6369;
+  letter-spacing: 0.1rem;
 }
 
 #characters .characterContainer img,
@@ -449,26 +452,13 @@ nav #submitBtn {
   margin-bottom: 0.5rem;
 }
 
-#characters .characterContainer p {
+#characters .characterContainer p,
+#creators .creatorContainer p {
   width: 8rem;
   margin: 0;
   text-align: center;
   font-size: 1.1rem;
   font-weight: bold;
-}
-
-#creators .creatorContainer p {
-  width: 8rem;
-  font-size: 1.1rem;
-  font-weight: bold;
-}
-
-.role {
-  color: #fff;
-}
-
-.roleContainer {
-  color: red;
 }
 
 #moreDetails::-webkit-scrollbar,
