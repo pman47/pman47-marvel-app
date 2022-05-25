@@ -37,7 +37,7 @@ document.getElementById("submitBtn").addEventListener("click", (e) => {
   }
 });
 
-// Fetching Character Details
+// Fetching Character Details when character is searched
 function fetchDetails(characterName) {
   fetch(
     "https://gateway.marvel.com:443/v1/public/characters?name=" +
@@ -126,12 +126,14 @@ function updateCharacterData(response) {
   }
 }
 
+// Close more details popup
 function closeMoreDetail() {
   document.getElementById("moreDetails").innerHTML = "";
   document.getElementById("moreDetails").style.display = "none";
   document.getElementById("body").style.overflow = "auto";
 }
 
+// Popup more details about comics when click on any comic
 function moreDetailsAboutComics(comicId) {
   const moreDetails = document.getElementById("moreDetails");
   moreDetails.style.display = "flex";
@@ -289,6 +291,7 @@ function moreDetailsAboutComics(comicId) {
     .catch((err) => console.log(err));
 }
 
+// Popup more details about series when click on any series
 function moreDetailsAboutSeries(seriesId) {
   // console.log(seriesId);
   const moreDetails = document.getElementById("moreDetails");
@@ -419,6 +422,7 @@ function moreDetailsAboutSeries(seriesId) {
     .catch((err) => console.log(err));
 }
 
+// Popup more details about events when click on any event
 function moreDetailsAboutEvents(eventId) {
   console.log(eventId);
   const moreDetails = document.getElementById("moreDetails");
@@ -549,6 +553,7 @@ function moreDetailsAboutEvents(eventId) {
     .catch((err) => console.log(err));
 }
 
+// Generic function which calls other functions
 function showMoreDetails() {
   const type = this.dataset.type;
   if (type == "comic") {
@@ -561,7 +566,7 @@ function showMoreDetails() {
   document.getElementById("body").style.overflow = "hidden";
 }
 
-// Printing Comic Details of character
+// Printing Comic Details of character being searched
 function printComicDetails(url) {
   fetch(url)
     .then((response) => response.json())
@@ -612,7 +617,7 @@ function printComicDetails(url) {
     .catch((error) => console.log(error));
 }
 
-// Printing Series Details of character
+// Printing Series Details of character being searched
 function printSeriesDetails(url) {
   fetch(url)
     .then((response) => response.json())
@@ -650,6 +655,7 @@ function printSeriesDetails(url) {
     .catch((error) => console.log(error));
 }
 
+// Printing Event Details of character being searched
 function printEventsDetails(url) {
   fetch(url)
     .then((response) => response.json())
@@ -689,6 +695,7 @@ function printEventsDetails(url) {
     .catch((error) => console.log(error));
 }
 
+// Load series when series button clicked
 function showSeries() {
   const allCatBtns = document.getElementsByClassName("catBtns");
   for (let i = 0; i < allCatBtns.length; i++) {
@@ -707,6 +714,7 @@ function showSeries() {
   document.getElementById("events").style.display = "none";
 }
 
+// Load series when comic button pressed
 function showComics() {
   const allCatBtns = document.getElementsByClassName("catBtns");
   for (let i = 0; i < allCatBtns.length; i++) {
@@ -725,6 +733,7 @@ function showComics() {
   document.getElementById("events").style.display = "none";
 }
 
+// Load series when event button pressed
 function showEvents() {
   const allCatBtns = document.getElementsByClassName("catBtns");
   for (let i = 0; i < allCatBtns.length; i++) {
@@ -743,6 +752,7 @@ function showEvents() {
   document.getElementById("series").style.display = "none";
 }
 
+// Load more comics while scrolling
 function addMoreComics() {
   showLoader();
   let url =
@@ -801,6 +811,7 @@ function addMoreComics() {
   hideLoader();
 }
 
+// Load more Series while scrolling
 function addMoreSeries() {
   let url =
     "https://gateway.marvel.com:443/v1/public/characters/" +
@@ -843,6 +854,7 @@ function addMoreSeries() {
     });
 }
 
+// Load more events while scrolling
 function addMoreEvents() {
   let url =
     "https://gateway.marvel.com:443/v1/public/characters/" +
@@ -887,6 +899,7 @@ function addMoreEvents() {
     });
 }
 
+// Check if more Comics | Series | Events are available while scrolling
 window.addEventListener("scroll", () => {
   const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
   if (scrollTop + clientHeight >= scrollHeight - 110) {
