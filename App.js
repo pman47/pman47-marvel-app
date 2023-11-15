@@ -1,4 +1,4 @@
-const key = "5a8c32c388f6d60cfb79758f85fb9e29";
+const key = "1f6fa584db6bea4c44cb4e2d3057e0ed";
 const loaderEl = document.getElementById("loader");
 
 let CharacterId,
